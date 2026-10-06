@@ -1,9 +1,24 @@
 # XFCloud Tunnel 服务端（xfcloud-server）
 
+![Version](https://img.shields.io/badge/version-0.10.2.9-brightgreen) ![License](https://img.shields.io/badge/license-AGPL--3.0-blue) ![Node.js](https://img.shields.io/badge/Node.js-22.5%2B-green) ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey) ![官网](https://img.shields.io/badge/%E5%AE%98%E7%BD%91-www.xfhub.top-orange?link=https%3A%2F%2Fwww.xfhub.top)
+
 基于 [frp](https://github.com/fatedier/frp) 内核的多用户内网穿透业务管理平台 —— 套餐开号、端口授权、实时流量统计、带宽限速、集群管理、品牌贴牌、在线更新一站式完成。部署在具有公网 IP 的服务器上，即可把内网穿透做成一门生意。
 
 - 客户端仓库：[xfcloud-client](https://github.com/xfcloud001/xfcloud-client)
-- 官网 / 教程 / 飞牛 fpk 下载：<https://www.xfhub.top>
+- 官网（产品介绍 / 图文教程 / 飞牛 fpk 下载）：**<https://www.xfhub.top>**
+- 图文部署教程：**<https://www.xfhub.top/tutorial>**
+
+## 界面预览
+
+| 总览控制台 | 用户管理 |
+| --- | --- |
+| ![总览控制台](docs/images/server-overview.png) | ![用户管理](docs/images/server-users.png) |
+| **套餐管理** | **映射监控** |
+| ![套餐管理](docs/images/server-plans.png) | ![映射监控](docs/images/server-mappings.png) |
+| **防火墙管理** | **品牌贴牌**（商业授权） |
+| ![防火墙管理](docs/images/server-firewall.png) | ![品牌贴牌](docs/images/server-branding.png) |
+
+> 更多截图与在线演示说明见官网：<https://www.xfhub.top>
 
 ## 功能特性
 
@@ -37,6 +52,8 @@ npm start            # 等价于 node --experimental-sqlite server/app.js
 3. 在控制台「FRP 管理」在线拉取 frps（按平台 / 架构自动缓存），即可创建用户与隧道
 4. 用户侧使用 [xfcloud-client](https://github.com/xfcloud001/xfcloud-client) 或飞牛 fnOS 原生 fpk 应用连接
 
+> Windows / 飞牛 NAS 用户推荐直接下载 fpk 安装包：**<https://www.xfhub.top>**（应用中心一键安装，内置 Node.js 22 与 frp 内核）
+
 ### 常用环境变量
 
 | 变量 | 默认值 | 说明 |
@@ -65,6 +82,10 @@ npm start            # 等价于 node --experimental-sqlite server/app.js
 - 想自建穿透服务卖给用户的**独立运营者**：开号、计费、限速、贴牌全套就绪
 - **团队 / 个人**自用：把家里 NAS、公司内网服务安全地暴露到公网
 - **飞牛 fnOS 用户**：服务端与客户端均有原生 fpk 应用，应用中心一键安装
+
+## 关键词 / Keywords
+
+内网穿透 · frp 面板 · frps 多用户 · frp 管理平台 · NAT 穿透 · 端口映射 · 端口转发 · 隧道服务 · 远程访问 · 异地访问 · NAS 穿透 · 飞牛 fnOS · fpk 应用 · 自建穿透服务 · 套餐计费 · 流量限速 · 品牌贴牌 · 多节点集群 · intranet penetration · nat traversal · frp panel · multi-user frp tunnel · port forwarding · reverse proxy · self-hosted tunnel service
 
 ## License
 
