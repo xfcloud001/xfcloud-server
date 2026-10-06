@@ -1,0 +1,118 @@
+        <section id="usersView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>用户管理</h1>
+              <p>账户、端口段与有效期</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="createUserButton" class="button">
+                <i data-lucide="user-plus" class="icon"></i>
+                新建用户
+              </button>
+              <button id="importUsersButton" class="button secondary" type="button">
+                <i data-lucide="upload" class="icon"></i>
+                导入账号
+              </button>
+              <button id="templateUsersButton" class="button ghost" type="button">
+                <i data-lucide="file-down" class="icon"></i>
+                下载模板
+              </button>
+              <button id="exportXlsxButton" class="button ghost" type="button">
+                <i data-lucide="file-spreadsheet" class="icon"></i>
+                导出 Excel
+              </button>
+              <button id="exportTxtButton" class="button ghost" type="button">
+                <i data-lucide="file-text" class="icon"></i>
+                导出 TXT
+              </button>
+            </div>
+          </header>
+
+          <div class="toolbar">
+            <div class="search">
+              <i data-lucide="search" class="icon"></i>
+              <input id="userSearch" type="search" placeholder="搜索用户名或端口" />
+            </div>
+            <span id="userCount" class="badge">0 名用户</span>
+          </div>
+
+          <div id="batchBar" class="batch-bar hidden">
+            <span id="batchSelectedCount" class="badge info">已选 0 人</span>
+            <button class="button tiny secondary" type="button" data-batch-action="rateLimit">
+              <i data-lucide="gauge" class="icon"></i>
+              批量限速
+            </button>
+            <button class="button tiny secondary" type="button" data-batch-action="plan">
+              <i data-lucide="package" class="icon"></i>
+              批量改套餐
+            </button>
+            <button class="button tiny secondary" type="button" data-batch-action="enable">
+              <i data-lucide="play" class="icon"></i>
+              批量启用
+            </button>
+            <button class="button tiny secondary" type="button" data-batch-action="disable">
+              <i data-lucide="pause" class="icon"></i>
+              批量停用
+            </button>
+            <button class="button tiny danger" type="button" data-batch-action="delete">
+              <i data-lucide="trash-2" class="icon"></i>
+              批量删除
+            </button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="check-cell">
+                    <input type="checkbox" id="userCheckAll" aria-label="全选" />
+                  </th>
+                  <th>用户</th>
+                  <th>用户 ID</th>
+                  <th>初始密码</th>
+                  <th>状态</th>
+                  <th>映射</th>
+                  <th>用量</th>
+                  <th>授权端口</th>
+                  <th>到期时间</th>
+                  <th>最后在线</th>
+                  <th aria-label="操作"></th>
+                </tr>
+              </thead>
+              <tbody id="userRows"></tbody>
+            </table>
+            <div id="usersEmpty" class="empty hidden">暂无用户</div>
+          </div>
+        </section>
+
+    <dialog id="usersBatchDialog">
+      <form id="usersBatchForm">
+        <header class="modal-head">
+          <h2 id="usersBatchDialogTitle">批量操作</h2>
+          <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <p id="usersBatchSummary" class="muted"></p>
+          <div id="usersBatchFieldRate" class="field hidden">
+            <label for="usersBatchRateMbps">带宽限速 (Mbps)</label>
+            <input id="usersBatchRateMbps" type="number" min="0" step="1" placeholder="0 = 不限速" />
+            <small>兆比特/秒；0 表示清除限速</small>
+          </div>
+          <div id="usersBatchFieldPlan" class="field hidden">
+            <label for="usersBatchPlanSelect">套餐</label>
+            <select id="usersBatchPlanSelect"></select>
+            <small>同时按套餐更新有效天数与流量配额</small>
+          </div>
+          <p id="usersBatchFormError" class="error-text" role="alert"></p>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-dialog>取消</button>
+            <button class="button" type="submit">
+              <i data-lucide="check" class="icon"></i>
+              确认执行
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>

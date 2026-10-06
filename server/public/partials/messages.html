@@ -1,0 +1,61 @@
+        <section id="messagesView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>消息中心</h1>
+              <p>运行报错自动提醒与客户端公告发布</p>
+            </div>
+          </header>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>运行提醒</h2>
+                <p>监听 frps 运行日志与服务端事件（报错/意外退出/端口冲突），保留最近 100 条</p>
+              </div>
+              <span id="serverMessageMeta" class="stat-meta"></span>
+            </div>
+            <div id="serverMessageList" class="message-list">
+              <p class="empty">暂无运行提醒</p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>客户端公告</h2>
+                <p>发布后下发到客户端「信息中心」，未读公告在客户端打开时自动弹窗；集群从节点自动同步</p>
+              </div>
+            </div>
+            <form id="announcementForm" class="announcement-form">
+              <div class="announcement-row">
+                <select id="announcementLevel" class="filter-select" aria-label="公告级别">
+                  <option value="info">公告</option>
+                  <option value="warn">重要</option>
+                </select>
+                <input
+                  id="announcementTitle"
+                  placeholder="公告标题（必填，80 字内）"
+                  maxlength="80"
+                  required
+                />
+              </div>
+              <textarea
+                id="announcementContent"
+                rows="4"
+                placeholder="公告内容（必填，4000 字内）"
+                maxlength="4000"
+                required
+              ></textarea>
+              <p id="announcementFormError" class="error-text hidden" role="alert"></p>
+              <div class="modal-actions">
+                <button class="button" type="submit">
+                  <i data-lucide="megaphone" class="icon"></i>
+                  发布公告
+                </button>
+              </div>
+            </form>
+            <div id="announcementManageList" class="message-list">
+              <p class="empty">暂无公告</p>
+            </div>
+          </section>
+        </section>

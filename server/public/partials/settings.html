@@ -1,0 +1,609 @@
+        <section id="settingsView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>系统设置</h1>
+              <p>品牌、许可、备案与续费配置</p>
+            </div>
+          </header>
+
+          <div id="settingsTabs" class="segmented settings-tabs" aria-label="设置分类">
+            <button type="button" data-settings-tab="branding" aria-pressed="true">品牌设置</button>
+            <button type="button" data-settings-tab="license" aria-pressed="false">许可授权</button>
+            <button type="button" data-settings-tab="update" aria-pressed="false">在线更新</button>
+            <button type="button" data-settings-tab="network" aria-pressed="false">网络</button>
+            <button type="button" data-settings-tab="account" aria-pressed="false">账号</button>
+            <button type="button" data-settings-tab="icp" aria-pressed="false">备案信息</button>
+            <button type="button" data-settings-tab="renewal" aria-pressed="false">续费地址</button>
+            <button type="button" data-settings-tab="publicinfo" aria-pressed="false">信息公开</button>
+            <button type="button" data-settings-tab="register" aria-pressed="false">注册与邮箱</button>
+          </div>
+
+          <div id="settingsPaneBranding" class="settings-pane">
+          <div class="content-grid">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>服务端控制台</h2>
+                  <p>显示在本控制台的登录页、侧边栏与浏览器标签</p>
+                </div>
+              </div>
+              <form id="siteBrandingForm" class="branding-form">
+                <div class="field">
+                  <label for="siteName">网站名称</label>
+                  <input id="siteName" maxlength="40" placeholder="XFCloud Tunnel" autocomplete="off" />
+                  <small>留空使用默认名称</small>
+                </div>
+                <div class="field">
+                  <label>网站 Logo</label>
+                  <div class="logo-picker">
+                    <img id="siteLogoPreview" class="logo-preview hidden" alt="网站 Logo 预览" />
+                    <span id="siteLogoPlaceholder" class="logo-placeholder">未设置，使用默认图标</span>
+                    <div class="logo-actions">
+                      <button class="button secondary" type="button" id="siteLogoChoose">
+                        <i data-lucide="image-up" class="icon"></i>
+                        选择图片
+                      </button>
+                      <button class="button ghost danger" type="button" id="siteLogoRemove" hidden>
+                        <i data-lucide="trash-2" class="icon"></i>
+                        移除
+                      </button>
+                    </div>
+                    <input id="siteLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/x-icon" hidden />
+                  </div>
+                  <small>建议正方形 PNG 或 SVG，小于 800KB</small>
+                </div>
+                <p id="siteBrandingError" class="error-text" role="alert"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="save" class="icon"></i>
+                    保存控制台品牌
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>客户端贴牌</h2>
+                  <p>客户端登录连接后，名称与 Logo 将替换为以下设置</p>
+                </div>
+              </div>
+              <form id="clientBrandingForm" class="branding-form">
+                <div class="field">
+                  <label for="clientName">客户端名称</label>
+                  <input id="clientName" maxlength="40" placeholder="XFCloud Tunnel" autocomplete="off" />
+                  <small>留空则客户端使用自带名称</small>
+                </div>
+                <div class="field">
+                  <label>客户端 Logo</label>
+                  <div class="logo-picker">
+                    <img id="clientLogoPreview" class="logo-preview hidden" alt="客户端 Logo 预览" />
+                    <span id="clientLogoPlaceholder" class="logo-placeholder">未设置，使用默认图标</span>
+                    <div class="logo-actions">
+                      <button class="button secondary" type="button" id="clientLogoChoose">
+                        <i data-lucide="image-up" class="icon"></i>
+                        选择图片
+                      </button>
+                      <button class="button ghost danger" type="button" id="clientLogoRemove" hidden>
+                        <i data-lucide="trash-2" class="icon"></i>
+                        移除
+                      </button>
+                    </div>
+                    <input id="clientLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/x-icon" hidden />
+                  </div>
+                  <small>客户端会自动下载并缓存该 Logo（含浏览器标签图标）</small>
+                </div>
+                <p id="clientBrandingError" class="error-text" role="alert"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="save" class="icon"></i>
+                    保存客户端品牌
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+          </div>
+
+          <div id="settingsPaneLicense" class="settings-pane hidden">
+            <div class="content-grid">
+              <section class="process-panel">
+                <div class="section-head">
+                  <div>
+                    <h2>授权状态</h2>
+                    <p id="licenseStatusText">等待检查</p>
+                  </div>
+                  <span id="licenseBadge" class="badge">未知</span>
+                </div>
+                <div class="status-line">
+                  <span>授权模式</span>
+                  <strong id="licenseMode">-</strong>
+                </div>
+                <div class="status-line">
+                  <span>授权到期</span>
+                  <strong id="licenseExpiresAt">-</strong>
+                </div>
+                <div class="status-line">
+                  <span>剩余时间</span>
+                  <strong id="licenseRemaining">-</strong>
+                </div>
+                <div class="status-line">
+                  <span>服务端实例 ID</span>
+                  <strong id="licenseInstallationId" class="mono">-</strong>
+                </div>
+                <div class="status-line">
+                  <span>最近验证</span>
+                  <strong id="licenseLastChecked">-</strong>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>设置许可密钥</h2>
+                    <p id="licenseKeyPreview">当前未设置密钥</p>
+                  </div>
+                </div>
+                <form id="licenseForm">
+                  <div class="field">
+                    <label for="licenseKey">许可密钥</label>
+                    <input
+                      id="licenseKey"
+                      class="mono"
+                      autocomplete="off"
+                      placeholder="XFT-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+                      required
+                    />
+                  </div>
+                  <p id="licenseFormError" class="error-text" role="alert"></p>
+                  <div class="process-actions">
+                    <button class="button" type="submit">
+                      <i data-lucide="badge-check" class="icon"></i>
+                      激活密钥
+                    </button>
+                    <button id="refreshLicenseButton" class="button secondary" type="button">
+                      <i data-lucide="refresh-cw" class="icon"></i>
+                      刷新状态
+                    </button>
+                    <button id="removeLicenseButton" class="button danger hidden" type="button">
+                      <i data-lucide="trash-2" class="icon"></i>
+                      移除密钥
+                    </button>
+                  </div>
+                </form>
+                <p id="licenseServerInfo" class="notice">
+                  <a id="purchaseUrlButton" class="button secondary" href="#" target="_blank" rel="noopener noreferrer" hidden>
+                    <i data-lucide="shopping-cart" class="icon"></i>
+                    购买密钥
+                  </a>
+                </p>
+              </section>
+            </div>
+          </div>
+
+          <div id="settingsPaneUpdate" class="settings-pane hidden">
+            <section class="panel" id="updatePanel">
+              <div class="section-head">
+                <div>
+                  <h2>在线更新</h2>
+                  <p>由授权中心统一发布，更新后服务自动重启</p>
+                </div>
+                <span id="updateBadge" class="badge">未知</span>
+              </div>
+              <div class="status-line">
+                <span>当前版本</span>
+                <strong id="updateCurrentVersion" class="mono">-</strong>
+              </div>
+              <div class="status-line">
+                <span>最新版本</span>
+                <strong id="updateLatestVersion" class="mono">-</strong>
+              </div>
+              <div class="status-line">
+                <span>发布时间</span>
+                <strong id="updatePublishedAt">-</strong>
+              </div>
+              <div class="status-line">
+                <span>紧急程度</span>
+                <strong id="updateUrgency">-</strong>
+              </div>
+              <details id="updateChangelogWrap" hidden>
+                <summary>更新日志</summary>
+                <pre id="updateChangelog" class="log-view"></pre>
+              </details>
+              <p id="updateError" class="error-text" role="alert"></p>
+              <div class="process-actions">
+                <button class="button secondary" id="checkUpdateButton" type="button">
+                  <i data-lucide="refresh-cw" class="icon"></i>
+                  检查更新
+                </button>
+                <button class="button" id="applyUpdateButton" type="button" hidden>
+                  <i data-lucide="download-cloud" class="icon"></i>
+                  在线更新
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <div id="settingsPaneIcp" class="settings-pane hidden">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>备案信息</h2>
+                  <p>显示在服务端与客户端页面底部，两项均为选填，留空则不显示</p>
+                </div>
+              </div>
+              <form id="icpForm" class="branding-form">
+                <div class="field">
+                  <label for="icpText">ICP 备案号</label>
+                  <input id="icpText" maxlength="100" placeholder="例如：京ICP备2026xxxxxx号-1（选填）" autocomplete="off" />
+                  <small>留空则页面底部不显示 ICP 备案</small>
+                </div>
+                <div class="field">
+                  <label for="policeText">公安备案号</label>
+                  <input id="policeText" maxlength="100" placeholder="例如：京公网安备11000002000001号（选填）" autocomplete="off" />
+                  <small>留空则页面底部不显示公安备案</small>
+                </div>
+                <p id="icpFormError" class="error-text" role="alert"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="save" class="icon"></i>
+                    保存备案信息
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>版权声明</h2>
+                  <p>页脚版权声明由授权中心统一管理。提交申请后由授权中心审批，通过后本服务端及所有连接的客户端同步生效。</p>
+                </div>
+              </div>
+              <div class="copyright-current">
+                <span class="muted">当前生效：</span>
+                <strong id="copyrightCurrentText">—</strong>
+                <span id="copyrightSource" class="tag">—</span>
+              </div>
+              <p id="copyrightRejectReason" class="error-text hidden" role="alert"></p>
+              <form id="copyrightForm" class="branding-form">
+                <div class="field">
+                  <label for="cpText">期望版权文字</label>
+                  <input id="cpText" maxlength="200" placeholder="例如：© 2026 某某科技有限公司" autocomplete="off" required />
+                </div>
+                <div class="field">
+                  <label for="cpUrl">版权链接（选填）</label>
+                  <input id="cpUrl" maxlength="300" placeholder="https://example.com" autocomplete="off" />
+                  <small>填写后页脚版权文字可点击跳转</small>
+                </div>
+                <div class="field">
+                  <label for="cpReason">申请理由</label>
+                  <textarea id="cpReason" rows="3" maxlength="500" placeholder="请说明申请自定义版权的理由（必填，将随服务端身份信息一并提交）" required></textarea>
+                </div>
+                <p id="copyrightFormError" class="error-text" role="alert"></p>
+                <p id="copyrightFormMsg" class="form-msg" role="status"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="send" class="icon"></i>
+                    向授权中心申请版权
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div id="settingsPaneRenewal" class="settings-pane hidden">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>续费地址</h2>
+                  <p>客户端"续费"按钮将打开此地址</p>
+                </div>
+              </div>
+              <form id="renewalUrlForm" class="branding-form">
+                <div class="field">
+                  <label for="renewalUrlInput">续费 URL</label>
+                  <input id="renewalUrlInput" type="url" placeholder="https://pay.example.com/renew" />
+                  <small>留空则客户端提示"管理员未设置续费地址"</small>
+                </div>
+                <p id="renewalUrlError" class="error-text" role="alert"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="save" class="icon"></i>
+                    保存续费地址
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div id="settingsPanePublicinfo" class="settings-pane hidden">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>公开服务端信息</h2>
+                  <p>推送到授权中心后，展示在所有客户端登录页左侧「服务器列表」（公开目录数据同源）</p>
+                </div>
+                <span id="publicInfoBadge" class="badge">-</span>
+              </div>
+              <div class="status-line">
+                <span>对外 IP（心跳自动登记）</span>
+                <strong id="publicInfoIp" class="mono">-</strong>
+              </div>
+              <div class="status-line">
+                <span>服务器名称</span>
+                <strong id="publicInfoHostname">-</strong>
+              </div>
+              <div class="status-line">
+                <span>心跳状态</span>
+                <strong id="publicInfoOnline">-</strong>
+              </div>
+              <form id="publicInfoForm" class="branding-form">
+                <div class="field">
+                  <label for="publicInfoLocation">服务器位置</label>
+                  <input id="publicInfoLocation" maxlength="64" placeholder="例如：香港 · CN2（选填）" autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label for="publicInfoPromo">促销 / 公告文案</label>
+                  <textarea id="publicInfoPromo" rows="3" maxlength="200" placeholder="例如：新用户首月 5 折，进群领体验账号（选填）"></textarea>
+                  <small>与客户端登录页「服务器列表」卡片展示一致，最长 200 字</small>
+                </div>
+                <div class="field">
+                  <label class="check-row" for="publicInfoHidden">
+                    <input id="publicInfoHidden" type="checkbox" />
+                    在客户端「服务器列表」中隐藏本服务器
+                  </label>
+                  <small>取消勾选即公开（需已激活许可，隐藏不影响客户端已保存的连接）</small>
+                </div>
+                <p id="publicInfoError" class="error-text" role="alert"></p>
+                <p id="publicInfoMsg" class="form-msg" role="status"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="cloud-upload" class="icon"></i>
+                    推送到授权中心
+                  </button>
+                  <button class="button secondary" type="button" id="publicInfoRefresh">
+                    <i data-lucide="refresh-cw" class="icon"></i>
+                    刷新当前信息
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div id="settingsPaneRegister" class="settings-pane hidden">
+            <div class="content-grid">
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>功能开关</h2>
+                    <p>客户端登录页将按开关显示「注册账号」与「忘记密码」入口</p>
+                  </div>
+                </div>
+                <form id="registerToggleForm" class="branding-form">
+                  <div class="field">
+                    <label class="check-row" for="registerEnabledInput">
+                      <input id="registerEnabledInput" type="checkbox" />
+                      开放注册（新用户自助注册账号，注册后默认无端口，可用套餐码开通）
+                    </label>
+                  </div>
+                  <div class="field">
+                    <label class="check-row" for="forgotEnabledInput">
+                      <input id="forgotEnabledInput" type="checkbox" />
+                      开放忘记密码（用户通过注册邮箱接收验证码找回）
+                    </label>
+                  </div>
+                  <div class="field">
+                    <label for="emailCodeTtlInput">邮箱验证码有效期（分钟）</label>
+                    <input id="emailCodeTtlInput" type="number" min="1" max="60" step="1" placeholder="10" />
+                    <small>1-60 分钟，控制注册 / 找回密码验证码的存活时间，保存后立即生效</small>
+                  </div>
+                  <p id="registerToggleError" class="error-text" role="alert"></p>
+                  <div class="process-actions">
+                    <button class="button" type="submit">
+                      <i data-lucide="save" class="icon"></i>
+                      保存开关
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>SMTP 邮箱服务</h2>
+                    <p>支持网易 163、QQ 邮箱等；到邮箱设置开启 SMTP 并复制「授权码」填入（非登录密码）</p>
+                  </div>
+                  <span id="smtpStateBadge" class="badge">未知</span>
+                </div>
+                <form id="smtpForm" class="branding-form">
+                  <div class="content-grid">
+                    <div class="field">
+                      <label for="smtpHost">服务器地址</label>
+                      <input id="smtpHost" placeholder="例如 smtp.163.com / smtp.qq.com" autocomplete="off" />
+                    </div>
+                    <div class="field">
+                      <label for="smtpPort">端口</label>
+                      <input id="smtpPort" type="number" min="1" max="65535" placeholder="465" />
+                      <small>465（SSL）或 587（STARTTLS）</small>
+                    </div>
+                    <div class="field">
+                      <label for="smtpUser">邮箱账号</label>
+                      <input id="smtpUser" type="email" placeholder="例如 xfcloud@163.com" autocomplete="off" />
+                    </div>
+                    <div class="field">
+                      <label for="smtpPass">授权码</label>
+                      <input id="smtpPass" type="password" placeholder="已配置时留空表示不修改" autocomplete="new-password" />
+                      <small id="smtpPassHint">尚未配置授权码</small>
+                    </div>
+                    <div class="field">
+                      <label for="smtpFrom">发件人地址（选填）</label>
+                      <input id="smtpFrom" type="email" placeholder="默认与邮箱账号一致" autocomplete="off" />
+                    </div>
+                    <div class="field">
+                      <label class="check-row" for="smtpSecure">
+                        <input id="smtpSecure" type="checkbox" />
+                        使用 SSL/TLS 直连（465 端口勾选，587 端口取消勾选）
+                      </label>
+                    </div>
+                  </div>
+                  <p id="smtpFormError" class="error-text" role="alert"></p>
+                  <p id="smtpFormMsg" class="form-msg" role="status"></p>
+                  <div class="process-actions">
+                    <button class="button" type="submit">
+                      <i data-lucide="save" class="icon"></i>
+                      保存 SMTP 配置
+                    </button>
+                  </div>
+                </form>
+                <form id="smtpTestForm" class="filter-bar" style="flex-wrap:wrap; gap:10px; align-items:flex-end; margin-top:16px;">
+                  <div class="field">
+                    <label for="smtpTestTo">测试邮箱</label>
+                    <input id="smtpTestTo" type="email" placeholder="填写一个能收信的邮箱地址" required />
+                  </div>
+                  <button class="button secondary" type="submit" id="smtpTestButton">
+                    <i data-lucide="send" class="icon"></i>
+                    发送测试邮件
+                  </button>
+                </form>
+              </section>
+            </div>
+
+            <section class="panel" style="margin-top:24px;">
+              <div class="section-head">
+                <div>
+                  <h2>邮件模板</h2>
+                  <p>支持占位符：{{code}} 验证码、{{email}} 收件邮箱、{{uid}} 用户 ID、{{product}} 产品名称、{{ttl}} 验证码有效期（分钟，随「验证码有效期」设置联动）</p>
+                </div>
+              </div>
+              <form id="mailTemplateForm" class="branding-form">
+                <div class="field">
+                  <label for="mailRegisterSubject">注册验证码邮件 - 主题</label>
+                  <input id="mailRegisterSubject" maxlength="120" placeholder="【{{product}}】注册验证码：{{code}}" autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label for="mailRegisterBody">注册验证码邮件 - 正文</label>
+                  <textarea id="mailRegisterBody" rows="6" maxlength="4000" placeholder="您正在注册 {{product}} 账号，验证码：{{code}}&#10;{{ttl}} 分钟内有效，请勿泄露给他人。"></textarea>
+                </div>
+                <div class="field">
+                  <label for="mailForgotSubject">忘记密码邮件 - 主题</label>
+                  <input id="mailForgotSubject" maxlength="120" placeholder="【{{product}}】密码找回验证码：{{code}}" autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label for="mailForgotBody">忘记密码邮件 - 正文</label>
+                  <textarea id="mailForgotBody" rows="6" maxlength="4000" placeholder="您正在找回 {{product}} 账号（{{email}}）的密码，验证码：{{code}}&#10;{{ttl}} 分钟内有效，请勿泄露给他人。"></textarea>
+                </div>
+                <p id="mailTemplateError" class="error-text" role="alert"></p>
+                <p id="mailTemplateMsg" class="form-msg" role="status"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="save" class="icon"></i>
+                    保存邮件模板
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div id="settingsPaneNetwork" class="settings-pane hidden">
+            <div class="content-grid">
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>管理端口</h2>
+                    <p>服务端控制台监听端口，保存后重启生效</p>
+                  </div>
+                </div>
+                <form id="networkForm" class="branding-form">
+                  <div class="field">
+                    <label for="networkPort">监听端口</label>
+                    <input id="networkPort" type="number" min="1" max="65535" placeholder="8080" />
+                    <small id="networkPortHint">默认 8080</small>
+                  </div>
+                  <div class="field">
+                    <label for="networkHttps">HTTPS</label>
+                    <label class="check-row" for="networkHttps">
+                      <input id="networkHttps" type="checkbox" />
+                      启用 HTTPS（需先上传证书与私钥，重启后生效）
+                    </label>
+                    <small id="networkHttpsState">-</small>
+                  </div>
+                  <p id="networkFormError" class="error-text" role="alert"></p>
+                  <div class="process-actions">
+                    <button class="button" type="submit">
+                      <i data-lucide="save" class="icon"></i>
+                      保存网络配置
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>HTTPS 证书</h2>
+                    <p>上传 PEM 格式证书与私钥（自签名证书浏览器会提示不受信任）</p>
+                  </div>
+                  <span id="networkCertBadge" class="badge">未知</span>
+                </div>
+                <div class="status-line">
+                  <span>证书状态</span>
+                  <strong id="networkCertState">-</strong>
+                </div>
+                <div class="filter-bar" style="flex-wrap:wrap; gap:10px; align-items:flex-end;">
+                  <button class="button secondary" id="uploadCertButton" type="button">
+                    <i data-lucide="file-up" class="icon"></i>
+                    上传证书
+                  </button>
+                  <button class="button secondary" id="uploadKeyButton" type="button">
+                    <i data-lucide="key-round" class="icon"></i>
+                    上传私钥
+                  </button>
+                  <button class="button ghost danger" id="clearCertButton" type="button">
+                    <i data-lucide="trash-2" class="icon"></i>
+                    清除证书
+                  </button>
+                  <input id="certFile" type="file" hidden />
+                  <input id="keyFile" type="file" hidden />
+                </div>
+                <p class="muted" style="margin-top:10px;">
+                  若已通过 Nginx/Caddy 反代终止 TLS，请保持 HTTPS 关闭；证书文件不超过 200KB。
+                </p>
+              </section>
+            </div>
+          </div>
+
+          <div id="settingsPaneAccount" class="settings-pane hidden">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>管理员用户名</h2>
+                  <p>修改后当前会话保持登录，其他已登录会话将失效</p>
+                </div>
+              </div>
+              <form id="usernameForm" class="branding-form">
+                <div class="field">
+                  <label for="adminUsernameNow">当前用户名</label>
+                  <input id="adminUsernameNow" class="mono" autocomplete="off" disabled />
+                </div>
+                <div class="field">
+                  <label for="newUsername">新用户名</label>
+                  <input id="newUsername" autocomplete="username" minlength="3" maxlength="32" required />
+                  <small>3-32 位，可包含字母、数字、点、下划线或短横线</small>
+                </div>
+                <div class="field">
+                  <label for="usernamePassword">当前密码</label>
+                  <input id="usernamePassword" type="password" autocomplete="current-password" required />
+                </div>
+                <p id="usernameFormError" class="error-text" role="alert"></p>
+                <div class="process-actions">
+                  <button class="button" type="submit">
+                    <i data-lucide="user-pen" class="icon"></i>
+                    修改用户名
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+        </section>

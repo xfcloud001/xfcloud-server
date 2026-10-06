@@ -1,0 +1,85 @@
+      <aside class="sidebar">
+        <div class="brand-mark">
+          <span class="brand-symbol"><i data-lucide="waypoints"></i></span>
+          <span class="brand-name">XFCloud Tunnel</span>
+        </div>
+        <nav class="nav" aria-label="主导航">
+          <div class="nav-group">
+            <span class="nav-label">监控中心</span>
+            <button class="nav-button active" data-view="overview">
+              <i data-lucide="layout-dashboard" class="icon"></i>
+              总览
+            </button>
+            <button class="nav-button" data-view="mappings">
+              <i data-lucide="gauge" class="icon"></i>
+              映射监控
+            </button>
+            <button class="nav-button" data-view="runtime">
+              <i data-lucide="activity" class="icon"></i>
+              运行状态
+            </button>
+            <!-- 0.10.2.8：消息中心——运行报错提醒 + 客户端公告发布，未读徽标 -->
+            <button class="nav-button" data-view="messages">
+              <i data-lucide="bell" class="icon"></i>
+              消息中心
+              <span id="serverMessagesBadge" class="nav-badge hidden"></span>
+            </button>
+          </div>
+          <div class="nav-group">
+            <span class="nav-label">隧道管理</span>
+            <button class="nav-button" data-view="users">
+              <i data-lucide="users" class="icon"></i>
+              用户管理
+            </button>
+            <button class="nav-button" data-view="plans">
+              <i data-lucide="package" class="icon"></i>
+              套餐管理
+            </button>
+            <button class="nav-button" data-view="cluster">
+              <i data-lucide="server-cog" class="icon"></i>
+              集群管理
+            </button>
+            <button class="nav-button" data-view="frp">
+              <i data-lucide="file-down" class="icon"></i>
+              FRP 文件
+            </button>
+            <button class="nav-button" data-view="firewall">
+              <i data-lucide="shield-check" class="icon"></i>
+              防火墙
+            </button>
+          </div>
+          <div class="nav-group">
+            <span class="nav-label">系统</span>
+            <button class="nav-button" data-view="settings">
+              <i data-lucide="settings" class="icon"></i>
+              设置
+            </button>
+          </div>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="sidebar-account">
+            <strong id="adminName">admin</strong>
+            <span>系统管理员</span>
+          </div>
+          <div class="sidebar-actions">
+            <button
+              id="changePasswordButton"
+              class="button ghost icon-only sidebar-logout"
+              type="button"
+              title="修改密码"
+              aria-label="修改密码"
+            >
+              <i data-lucide="key-round" class="icon"></i>
+            </button>
+            <button
+              id="adminLogoutButton"
+              class="button ghost icon-only sidebar-logout"
+              type="button"
+              title="退出登录"
+              aria-label="退出登录"
+            >
+              <i data-lucide="log-out" class="icon"></i>
+            </button>
+          </div>
+        </div>
+      </aside>

@@ -1,0 +1,55 @@
+        <section id="mappingsView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>映射监控</h1>
+              <p id="mappingUpdatedAt">等待状态更新</p>
+            </div>
+            <button class="button secondary" data-action="refresh">
+              <i data-lucide="refresh-cw" class="icon"></i>
+              刷新
+            </button>
+          </header>
+
+          <div class="toolbar mapping-toolbar">
+            <div class="search">
+              <i data-lucide="search" class="icon"></i>
+              <input id="mappingSearch" type="search" placeholder="搜索用户、名称或端口" />
+            </div>
+
+            <div class="toolbar-group">
+              <div id="mappingRefresh" class="segmented" aria-label="刷新频率">
+                <button type="button" data-mapping-refresh="1000" aria-pressed="false">实时</button>
+                <button type="button" data-mapping-refresh="5000" aria-pressed="false">5秒</button>
+                <button type="button" data-mapping-refresh="10000" aria-pressed="true">10秒</button>
+              </div>
+              <div id="mappingFilters" class="segmented" aria-label="映射状态筛选">
+                <button type="button" data-mapping-filter="all" aria-pressed="true">全部</button>
+                <button type="button" data-mapping-filter="online" aria-pressed="false">在线</button>
+                <button type="button" data-mapping-filter="offline" aria-pressed="false">离线</button>
+              </div>
+              <div id="mappingNodeFilters" class="segmented" aria-label="节点筛选"></div>
+              <span id="mappingCount" class="badge">0 条映射</span>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="mapping-table">
+              <thead>
+                <tr>
+                  <th>用户</th>
+                  <th>映射名称</th>
+                  <th>节点</th>
+                  <th>协议</th>
+                  <th>访问方式</th>
+                  <th>实时流量</th>
+                  <th>客户端地址</th>
+                  <th>状态</th>
+                  <th>限速</th>
+                  <th>最后活动</th>
+                </tr>
+              </thead>
+              <tbody id="mappingRows"></tbody>
+            </table>
+            <div id="mappingsEmpty" class="empty hidden">暂无映射记录</div>
+          </div>
+        </section>

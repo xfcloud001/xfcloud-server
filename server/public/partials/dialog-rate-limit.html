@@ -1,0 +1,35 @@
+    <dialog id="rateLimitDialog">
+      <form id="rateLimitForm">
+        <header class="modal-head">
+          <h2>隧道限速</h2>
+          <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <input id="rateLimitUserId" type="hidden" />
+          <input id="rateLimitProxyName" type="hidden" />
+          <div class="form-grid">
+            <div class="field wide">
+              <label>隧道</label>
+              <p class="mono" id="rateLimitProxyLabel" style="margin:0;font-weight:600;">-</p>
+            </div>
+            <div class="field wide">
+              <label for="rateLimitValue">带宽上限 (Mbps)</label>
+              <input id="rateLimitValue" type="number" min="0" step="1" placeholder="0 = 继承账户级限速" />
+              <p class="field-hint">
+                单位为兆比特/秒（Mbps），例如 100Mbps 宽带填 100；0 表示清除端口级限速（继承账户级限速）；端口级限速优先于账户级，设置后以端口级为准。
+              </p>
+            </div>
+          </div>
+          <p id="rateLimitError" class="error-text" role="alert"></p>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-dialog>取消</button>
+            <button class="button" type="submit">
+              <i data-lucide="gauge" class="icon"></i>
+              保存
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>

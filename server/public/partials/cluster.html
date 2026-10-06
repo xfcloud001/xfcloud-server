@@ -1,0 +1,176 @@
+        <section id="clusterView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>集群管理</h1>
+              <p>1 个主节点 + 多个从节点；集群内用户数据互通，注册由主节点提供</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="clusterSyncVersionButton" class="button secondary" type="button">
+                <i data-lucide="refresh-cw-down" class="icon"></i>
+                同步版本
+              </button>
+              <button id="clusterAddButton" class="button" type="button">
+                <i data-lucide="server-plus" class="icon"></i>
+                添加节点
+              </button>
+            </div>
+          </header>
+
+          <div class="content-grid">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>本机环境检测</h2>
+                  <p>自动部署依赖检查；缺失项处理后再添加节点</p>
+                </div>
+              </div>
+              <div class="status-line">
+                <span>运行角色</span>
+                <strong id="clusterRoleBadge" class="badge">-</strong>
+              </div>
+              <div class="status-line">
+                <span>操作系统</span>
+                <strong id="clusterEnvPlatform">-</strong>
+              </div>
+              <div class="status-line">
+                <span>sshpass</span>
+                <strong id="clusterEnvSshpass" class="badge">-</strong>
+              </div>
+              <div class="status-line">
+                <span>frps 内核</span>
+                <strong id="clusterEnvFrps" class="badge">-</strong>
+              </div>
+              <div class="status-line">
+                <span>从节点部署路径</span>
+                <strong id="clusterEnvDeployDir" class="mono">-</strong>
+              </div>
+              <p id="clusterEnvWarning" class="notice hidden"></p>
+            </section>
+
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>集群名称</h2>
+                  <p>展示在客户端登录页节点列表；与「设置 → 信息公开」联动推送到授权中心</p>
+                </div>
+              </div>
+              <!-- 0.10.2.0：集群 id（授权中心分配，客户端登录页可直接用 id 登录集群） -->
+              <div id="clusterIdLine" class="status-line hidden">
+                <span>集群 ID</span>
+                <strong id="clusterIdValue" class="mono">-</strong>
+              </div>
+              <form id="clusterNameForm" class="branding-form">
+                <div class="field">
+                  <label for="clusterDisplayNameInput">主节点名称（选填）</label>
+                  <input id="clusterDisplayNameInput" maxlength="60" placeholder="默认显示服务器地址" autocomplete="off" />
+                  <small>主节点在客户端「节点选择」和总览集群卡中的展示名称</small>
+                </div>
+                <div class="field">
+                  <label for="clusterNameInput">集群名称（选填）</label>
+                  <input id="clusterNameInput" maxlength="60" placeholder="例如：华南加速集群" autocomplete="off" />
+                  <small>填写后客户端目录将显示集群卡片与「去集群注册」入口</small>
+                </div>
+                <button class="button" type="submit">
+                  <i data-lucide="save" class="icon"></i>
+                  保存名称
+                </button>
+              </form>
+            </section>
+          </div>
+
+          <section class="panel" style="margin-top:24px;">
+            <div class="section-head">
+              <div>
+                <h2>节点列表</h2>
+                <p>从节点每 30 秒向主节点同步一次；状态 online 表示同步正常。可将从节点提升为主节点（需验证管理员密码；提升后原主节点自动转为从节点）</p>
+              </div>
+              <span id="clusterSummaryBadge" class="badge">-</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>节点名称</th>
+                    <th>角色</th>
+                    <th>地址</th>
+                    <th>客户端 API</th>
+                    <th>frp 端口</th>
+                    <th>状态</th>
+                    <th>版本</th>
+                    <th>最近同步</th>
+                    <th>frps</th>
+                    <th>统计</th>
+                    <th>优先级</th>
+                    <th aria-label="操作"></th>
+                  </tr>
+                </thead>
+                <tbody id="clusterRows"></tbody>
+              </table>
+              <div id="clusterEmpty" class="empty hidden">暂无从节点，点击「添加节点」自动部署</div>
+            </div>
+          </section>
+
+          <section class="panel" style="margin-top:24px;">
+            <div class="section-head">
+              <div>
+                <h2>添加 / 部署从节点</h2>
+                <p>输入从节点 SSH 信息后自动传输代码、安装 systemd 服务并启动</p>
+              </div>
+            </div>
+            <p class="notice">
+              部署要求：主节点为 Linux 且已安装 sshpass；从节点为 root 权限用户、已安装 Node.js 22.5+，
+              默认部署路径 <span class="mono">/etc/xfcloud</span>。超出免费额度（每集群 1 台）的从节点需持有集群授权许可。
+            </p>
+            <form id="clusterDeployForm" class="branding-form">
+              <div class="content-grid">
+                <div class="field">
+                  <label for="clusterDeployName">节点名称（已有则重新部署）</label>
+                  <input id="clusterDeployName" maxlength="40" placeholder="例如：hk-node-1" autocomplete="off" required />
+                </div>
+                <div class="field">
+                  <label for="clusterDeployHost">从节点 IP / 域名</label>
+                  <input id="clusterDeployHost" placeholder="例如：1.2.3.4" autocomplete="off" required />
+                </div>
+                <div class="field">
+                  <label for="clusterDeploySshUser">SSH 用户名</label>
+                  <input id="clusterDeploySshUser" placeholder="root" autocomplete="off" value="root" required />
+                  <small>要求 root 权限用户</small>
+                </div>
+                <div class="field">
+                  <label for="clusterDeploySshPassword">SSH 密码</label>
+                  <input id="clusterDeploySshPassword" type="password" autocomplete="new-password" required />
+                </div>
+                <div class="field">
+                  <label for="clusterDeployMaster">主节点对外地址（选填）</label>
+                  <input id="clusterDeployMaster" placeholder="默认取当前访问地址" autocomplete="off" />
+                  <small>从节点将连接 主节点地址:9400 拉取数据</small>
+                </div>
+              </div>
+              <p id="clusterDeployError" class="error-text" role="alert"></p>
+              <div class="process-actions">
+                <button class="button" type="submit" id="clusterDeploySubmit">
+                  <i data-lucide="rocket" class="icon"></i>
+                  自动部署
+                </button>
+              </div>
+            </form>
+            <details id="clusterDeployLogWrap" class="hidden">
+              <summary>部署日志</summary>
+              <pre id="clusterDeployLog" class="log-view"></pre>
+            </details>
+          </section>
+
+          <!-- 0.10.1.3 规格1：frps 运行日志弹窗（主节点读本机，从节点经命令队列获取） -->
+          <dialog id="frpsLogDialog">
+            <header class="modal-head">
+              <h2 id="frpsLogTitle">frps 运行日志</h2>
+              <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+                <i data-lucide="x" class="icon"></i>
+              </button>
+            </header>
+            <div class="modal-body">
+              <p class="muted" id="frpsLogHint">内存环形日志（随服务重启清空）；从节点日志经同步通道获取，约 30 秒内回报</p>
+              <pre id="frpsLogContent" class="log-view">获取中…</pre>
+            </div>
+          </dialog>
+        </section>

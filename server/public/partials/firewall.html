@@ -1,0 +1,127 @@
+        <section id="firewallView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>防火墙</h1>
+              <p>开放服务端端口、查看端口占用与隧道归属</p>
+            </div>
+            <button class="button secondary" data-firewall-refresh type="button">
+              <i data-lucide="refresh-cw" class="icon"></i>
+              刷新
+            </button>
+          </header>
+
+          <div id="firewallBanner" class="panel"></div>
+
+          <section class="panel" id="firewallClusterPanel">
+            <div class="section-head">
+              <div>
+                <h2>集群防火墙状态</h2>
+                <p>防火墙由主节点统一管理：放行 / 开关 / 重启操作会同步下发到所有在线从节点</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>节点</th>
+                    <th>角色</th>
+                    <th>连接状态</th>
+                    <th>防火墙后端</th>
+                    <th>运行状态</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody id="firewallClusterBody">
+                  <tr><td colspan="6" class="muted">加载中…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>开放端口</h2>
+                <p>在系统防火墙中放行入站端口；云服务器还需在云厂商控制台的「安全组」中同步放行</p>
+              </div>
+            </div>
+            <form id="firewallOpenForm" class="vhost-form">
+              <div class="field">
+                <label for="firewallPortsInput">端口 / 端口段</label>
+                <input
+                  id="firewallPortsInput"
+                  type="text"
+                  placeholder="如 7000 或 10000-10020，多个用逗号分隔"
+                />
+                <small>支持单端口（10000）或连续段（10000-10020）</small>
+              </div>
+              <div class="field">
+                <label for="firewallProtoSelect">协议</label>
+                <select id="firewallProtoSelect">
+                  <option value="tcp">TCP</option>
+                  <option value="udp">UDP</option>
+                  <option value="both">TCP + UDP</option>
+                </select>
+              </div>
+              <button class="button" type="submit">
+                <i data-lucide="shield-plus" class="icon"></i>
+                放行
+              </button>
+            </form>
+            <p class="muted">
+              <i data-lucide="info" class="icon"></i>
+              云服务器（腾讯云/阿里云等）的安全组规则独立于系统防火墙，请务必在安全组中同样放行对应端口，否则外网仍无法访问。
+            </p>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>端口使用情况</h2>
+                <p>当前本机监听中的端口及其归属（系统服务 / 隧道 / 其他进程）</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>端口</th>
+                    <th>协议</th>
+                    <th>占用进程</th>
+                    <th>归属</th>
+                    <th>防火墙</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="firewallPortsBody">
+                  <tr><td colspan="6" class="muted">加载中…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>用户端口池放行状态</h2>
+                <p>各用户分配的端口段是否已在防火墙放行；未放行的端口段外网无法访问</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>用户ID</th>
+                    <th>用户名</th>
+                    <th>端口段</th>
+                    <th>防火墙状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="firewallPoolsBody">
+                  <tr><td colspan="5" class="muted">加载中…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>

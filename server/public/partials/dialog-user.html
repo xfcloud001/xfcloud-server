@@ -1,0 +1,173 @@
+    <dialog id="userDialog">
+      <form id="userForm">
+        <header class="modal-head">
+          <h2 id="userDialogTitle">新建用户</h2>
+          <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <input id="userId" type="hidden" />
+          <!-- 0.10.1.2 规格9：编辑项拆分为多 Tab，降低单页字段密度 -->
+          <div class="dialog-tabs" id="userDialogTabs" role="tablist" aria-label="用户编辑分区">
+            <button class="dialog-tab active" type="button" data-user-tab="base" role="tab">基本信息</button>
+            <button class="dialog-tab" type="button" data-user-tab="ports" role="tab">端口授权</button>
+            <button class="dialog-tab" type="button" data-user-tab="plan" role="tab">套餐与到期</button>
+            <button class="dialog-tab" type="button" data-user-tab="perms" role="tab">权限与状态</button>
+          </div>
+          <div class="dialog-panel" data-user-panel="base">
+            <div class="form-grid">
+              <div class="field">
+                <label for="userUid">用户 ID（登录账号）</label>
+                <input id="userUid" autocomplete="off" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="留空自动生成" />
+                <small>6 位数字、全局唯一；新建留空则自动随机生成</small>
+              </div>
+              <div class="field">
+                <label for="username">用户名（仅展示，可重复）</label>
+                <input id="username" autocomplete="off" required maxlength="32" />
+              </div>
+              <div class="field wide">
+                <label for="userPassword">密码</label>
+                <input id="userPassword" type="password" autocomplete="new-password" />
+                <small id="passwordHint">至少 8 位；留空新建时自动生成</small>
+              </div>
+            </div>
+          </div>
+          <div class="dialog-panel hidden" data-user-panel="ports">
+            <div class="form-grid">
+              <div class="field wide">
+                <label for="userNodeSelect">授权节点</label>
+                <select id="userNodeSelect"></select>
+                <small>先选节点，再为该节点分配端口；不同节点端口池互相独立</small>
+              </div>
+              <div class="field wide">
+                <label for="portRanges">授权端口</label>
+                <input id="portRanges" placeholder="10000-10020, 10100；填 0 收回该节点端口" />
+                <small id="portRangesHint">多个端口段用逗号分隔；填 0 或留空 = 收回该节点端口并取消关联</small>
+                <div class="form-inline-actions">
+                  <button type="button" class="button ghost tiny" id="revokeNodePorts">收回当前节点端口</button>
+                  <button type="button" class="button danger tiny" id="revokeAllPorts">收回全部端口</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="dialog-panel hidden" data-user-panel="plan">
+            <div class="form-grid">
+              <div class="field wide">
+                <label for="userPlan">套餐快照</label>
+                <select id="userPlan">
+                  <option value="">不关联套餐</option>
+                </select>
+                <small>仅记录开通时的套餐；账号限额以授权端口 / 流量配额为准</small>
+              </div>
+              <div class="field">
+                <label for="userDurationDays">套餐天数</label>
+                <input id="userDurationDays" type="number" min="1" max="3650" step="1" placeholder="30" />
+                <small id="userDurationHint">有效期天数；首次登录（改密激活）后才开始计算</small>
+              </div>
+              <div class="field hidden" id="userExpiresField">
+                <label for="userExpiresAt">到期时间（已激活）</label>
+                <input id="userExpiresAt" type="datetime-local" step="60" />
+                <small id="userExpiresHint">管理员可直接修改到期时间；清空表示取消到期限制</small>
+              </div>
+            </div>
+          </div>
+          <div class="dialog-panel hidden" data-user-panel="perms">
+            <div class="form-grid">
+              <div class="field wide">
+                <label>账户状态</label>
+                <label class="check-row">
+                  <input id="userEnabled" type="checkbox" checked />
+                  允许连接
+                </label>
+                <label class="check-row">
+                  <input id="userMustChangePassword" type="checkbox" />
+                  首次登录强制改密
+                </label>
+                <label class="check-row">
+                  <input id="userHttpAllowed" type="checkbox" />
+                  允许 HTTP/HTTPS 隧道
+                </label>
+              </div>
+              <div class="field">
+                <label for="rateLimitBps">带宽限速 (Mbps)</label>
+                <input id="rateLimitBps" type="number" min="0" step="1" placeholder="0 = 不限速" />
+                <small>兆比特/秒，如 100Mbps 宽带填 100；0 表示不限速；对单个端口单独限速请到「映射监控」，端口级优先于此处</small>
+              </div>
+              <div class="field">
+                <label for="trafficLimitBytes">流量配额 (MB)</label>
+                <input id="trafficLimitBytes" type="number" min="0" step="1" placeholder="0 = 不限量" />
+                <small>0 表示不限量；超过后阻止新连接</small>
+              </div>
+            </div>
+          </div>
+          <p id="userFormError" class="error-text" role="alert"></p>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-dialog>取消</button>
+            <button class="button" type="submit">
+              <i data-lucide="save" class="icon"></i>
+              保存
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="importDialog" class="batch-dialog">
+      <form id="importForm">
+        <header class="modal-head">
+          <h2>导入账号</h2>
+          <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <div class="notice">
+            <p>
+              支持 Excel（.xlsx）与文本（.txt/.csv，逗号或制表符分隔）。请先下载模板按列填写：
+              用户 ID、密码留空将自动生成；端口范围留空自动从端口池分配；套餐名留空使用默认套餐；有效天数留空取套餐天数。
+            </p>
+          </div>
+          <div class="modal-actions">
+            <button class="button ghost" type="button" data-template="xlsx">
+              <i data-lucide="file-spreadsheet" class="icon"></i>
+              Excel 模板
+            </button>
+            <button class="button ghost" type="button" data-template="txt">
+              <i data-lucide="file-text" class="icon"></i>
+              TXT 模板
+            </button>
+          </div>
+          <div class="field">
+            <label for="importFile">选择文件（.xlsx / .txt，最大 5MB）</label>
+            <input id="importFile" type="file" accept=".xlsx,.txt,.csv" required />
+          </div>
+          <p id="importFormError" class="error-text" role="alert"></p>
+          <div id="importResult" class="batch-result hidden">
+            <div class="section-head">
+              <h3>导入结果</h3>
+            </div>
+            <p id="importSummary" class="muted"></p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>行号</th>
+                    <th>用户名</th>
+                    <th>失败原因</th>
+                  </tr>
+                </thead>
+                <tbody id="importFailedRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-dialog>取消</button>
+            <button class="button" type="submit">
+              <i data-lucide="upload" class="icon"></i>
+              开始导入
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>

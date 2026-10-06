@@ -1,0 +1,73 @@
+        <section id="runtimeView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>运行状态</h1>
+              <p>frps 最近输出</p>
+            </div>
+            <button class="button secondary" data-action="refresh">
+              <i data-lucide="refresh-cw" class="icon"></i>
+              刷新
+            </button>
+          </header>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>frp 监听端口</h2>
+                <p>frpc 连接服务端使用的端口（bindPort）；首次启动默认随机生成，可在此手动固定</p>
+              </div>
+            </div>
+            <form id="bindPortForm" class="vhost-form">
+              <div class="field">
+                <label for="frpBindPort">监听端口（bindPort）</label>
+                <input id="frpBindPort" type="number" min="1" max="65535" step="1" />
+                <small>修改后 frps 自动重启；客户端将在下次心跳后自动切换到新端口</small>
+              </div>
+              <button class="button" type="submit">
+                <i data-lucide="save" class="icon"></i>
+                保存并重启 frps
+              </button>
+            </form>
+            <p id="bindPortMsg" class="muted">由环境变量 FRP_BIND_PORT 固定时不可修改</p>
+          </section>
+
+          <!-- 0.10.1.0：从节点监听端口——主节点远程下发修改（命令队列，从节点约 30 秒内执行） -->
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>从节点监听端口</h2>
+                <p>远程修改各从节点的 frps 监听端口；命令经同步通道下发，从节点执行后自动重启 frps 并放行防火墙</p>
+              </div>
+            </div>
+            <div id="slavePortRows" class="slave-port-rows"></div>
+            <p id="slavePortMsg" class="muted">从节点离线时无法下发；修改结果将在该节点下一次同步时刷新显示</p>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>HTTP/HTTPS 隧道端口</h2>
+                <p>HTTP 隧道按 Host 头路由、HTTPS 隧道按 SNI 透传；客户端自定义域名（customDomains）走这两个端口</p>
+              </div>
+            </div>
+            <form id="vhostForm" class="vhost-form">
+              <div class="field">
+                <label for="vhostHttpPort">HTTP vhost 端口</label>
+                <input id="vhostHttpPort" type="number" min="0" max="65535" step="1" />
+                <small>默认关闭（0）；填写 80 等端口后开启 HTTP 隧道</small>
+              </div>
+              <div class="field">
+                <label for="vhostHttpsPort">HTTPS vhost 端口</label>
+                <input id="vhostHttpsPort" type="number" min="0" max="65535" step="1" />
+                <small>默认关闭（0）；填写 443 等端口后开启 HTTPS 隧道</small>
+              </div>
+              <button class="button" type="submit">
+                <i data-lucide="save" class="icon"></i>
+                保存并重启 frps
+              </button>
+            </form>
+            <p id="vhostMsg" class="muted">由环境变量 FRP_VHOST_HTTP_PORT / FRP_VHOST_HTTPS_PORT 固定时不可修改</p>
+          </section>
+
+          <pre id="frpsLogs" class="log-view">暂无日志</pre>
+        </section>

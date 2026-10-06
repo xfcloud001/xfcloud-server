@@ -1,0 +1,55 @@
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>XFCloud Tunnel 服务端</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/assets/style.css?v=0.10.2.8" />
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+    <script src="/app.js?v=0.10.2.8" type="module"></script>
+  </head>
+  <body>
+    <!--include:partials/login.html-->
+
+    <div id="appView" class="app-shell hidden">
+      <!--include:partials/sidebar.html-->
+
+      <!-- 0.10.2.4：手机端侧边栏抽屉切换按钮与遮罩（桌面端隐藏） -->
+      <button
+        id="sidebarToggle"
+        class="sidebar-toggle"
+        type="button"
+        aria-label="收起菜单"
+        aria-expanded="true"
+      >
+        <i data-lucide="x" class="icon icon-close"></i>
+        <i data-lucide="menu" class="icon icon-menu"></i>
+      </button>
+      <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+      <main class="main">
+        <!--include:partials/overview.html-->
+        <!--include:partials/users.html-->
+        <!--include:partials/plans.html-->
+        <!--include:partials/cluster.html-->
+        <!--include:partials/mappings.html-->
+        <!--include:partials/runtime.html-->
+        <!--include:partials/messages.html-->
+        <!--include:partials/settings.html-->
+        <!--include:partials/frp.html-->
+        <!--include:partials/firewall.html-->
+        <!--include:partials/app-footer.html-->
+      </main>
+    </div>
+
+    <!--include:partials/dialog-user.html-->
+    <!--include:partials/dialog-plan.html-->
+    <!--include:partials/dialog-renew.html-->
+    <!--include:partials/dialog-password.html-->
+    <!--include:partials/dialog-rate-limit.html-->
+
+    <div id="toastStack" class="toast-stack" aria-live="polite"></div>
+  </body>
+</html>

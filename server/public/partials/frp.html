@@ -1,0 +1,107 @@
+        <section id="frpView" class="page-view hidden">
+          <header class="topbar">
+            <div>
+              <h1>FRP 文件管理</h1>
+              <p>管理下发给各平台客户端的 frpc 二进制（服务端自身使用的 frps 不在此管理）</p>
+            </div>
+            <button class="button secondary" data-action="refresh-frp" type="button">
+              <i data-lucide="refresh-cw" class="icon"></i>
+              刷新
+            </button>
+          </header>
+
+          <div class="content-grid">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>从授权中心预拉取 frpc</h2>
+                  <p>提前缓存各平台/架构的 frpc，客户端首次下载时无需等待</p>
+                </div>
+              </div>
+              <div class="filter-bar" style="flex-wrap:wrap; gap:10px; align-items:flex-end;">
+                <div class="field" style="margin:0; min-width:160px;">
+                  <label for="frpcFetchPlatform">平台</label>
+                  <select id="frpcFetchPlatform">
+                    <option value="windows">windows</option>
+                    <option value="linux">linux</option>
+                    <option value="darwin">darwin</option>
+                  </select>
+                </div>
+                <div class="field" style="margin:0; min-width:140px;">
+                  <label for="frpcFetchArch">架构</label>
+                  <select id="frpcFetchArch">
+                    <option value="amd64">amd64</option>
+                    <option value="arm64">arm64</option>
+                    <option value="arm">arm</option>
+                  </select>
+                </div>
+                <button id="fetchFrpcButton" class="button" type="button">
+                  <i data-lucide="download-cloud" class="icon"></i>
+                  拉取并缓存
+                </button>
+              </div>
+              <p class="muted" style="margin-top:10px;">
+                客户端首次拉取时若本地无缓存，服务端也会自动从授权中心下载对应版本。
+              </p>
+            </section>
+
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>手动上传 frpc</h2>
+                  <p>为离线/内网环境准备指定平台的 frpc，按目标平台校验可执行文件</p>
+                </div>
+              </div>
+              <div class="filter-bar" style="flex-wrap:wrap; gap:10px; align-items:flex-end;">
+                <div class="field" style="margin:0; min-width:160px;">
+                  <label for="frpcUploadPlatform">平台</label>
+                  <select id="frpcUploadPlatform">
+                    <option value="windows">windows</option>
+                    <option value="linux">linux</option>
+                    <option value="darwin">darwin</option>
+                  </select>
+                </div>
+                <div class="field" style="margin:0; min-width:140px;">
+                  <label for="frpcUploadArch">架构</label>
+                  <select id="frpcUploadArch">
+                    <option value="amd64">amd64</option>
+                    <option value="arm64">arm64</option>
+                    <option value="arm">arm</option>
+                  </select>
+                </div>
+                <button id="uploadFrpcButton" class="button secondary" type="button">
+                  <i data-lucide="upload" class="icon"></i>
+                  选择文件上传
+                </button>
+                <input id="frpcFileInput" type="file" hidden />
+              </div>
+            </section>
+          </div>
+
+          <section class="panel" style="margin-top:20px;">
+            <div class="section-head">
+              <div>
+                <h2>本地缓存的 frpc 文件</h2>
+                <p>存储于服务器 <code>bin/frpc-&lt;平台&gt;-&lt;架构&gt;</code></p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>平台</th>
+                    <th>架构</th>
+                    <th>版本</th>
+                    <th>文件大小</th>
+                    <th>缓存时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="frpcCacheBody">
+                  <tr><td colspan="6" class="muted">加载中...</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p id="frpMessage" class="error-text" role="alert" style="margin-top:8px;"></p>
+          </section>
+        </section>

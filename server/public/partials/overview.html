@@ -1,0 +1,276 @@
+        <section id="overviewView" class="page-view">
+          <header class="topbar">
+            <div>
+              <h1>服务总览</h1>
+              <p id="overviewTime"></p>
+            </div>
+            <button class="button secondary" data-action="refresh">
+              <i data-lucide="refresh-cw" class="icon"></i>
+              刷新
+            </button>
+          </header>
+
+          <div id="licenseNotice" class="notice hidden"></div>
+
+          <section class="panel announce-panel">
+            <div class="section-head">
+              <div>
+                <h2>公告栏</h2>
+                <p>由授权中心统一下发</p>
+              </div>
+              <span id="announceMeta" class="stat-meta"></span>
+            </div>
+            <div id="announceList" class="announce-list"></div>
+          </section>
+
+          <!-- 0.10.1.3 规格3：统计卡片缩小横排（单行紧凑），口径为全集群（主节点 + 从节点） -->
+          <div class="stats-grid stats-compact">
+            <article class="stat">
+              <div class="stat-label">用户总数 <span class="stat-tag">全集群</span></div>
+              <div id="statUsers" class="stat-value">0</div>
+              <div class="stat-meta">已创建账户</div>
+            </article>
+            <article class="stat">
+              <div class="stat-label">有效账户 <span class="stat-tag">全集群</span></div>
+              <div id="statActive" class="stat-value">0</div>
+              <div class="stat-meta">未停用且未到期</div>
+            </article>
+            <article class="stat">
+              <div class="stat-label">当前在线 <span class="stat-tag">全集群</span></div>
+              <div id="statOnline" class="stat-value">0</div>
+              <div class="stat-meta">30 秒内收到心跳</div>
+            </article>
+            <article class="stat">
+              <div class="stat-label">已分配端口 <span class="stat-tag">全集群</span></div>
+              <div id="statPorts" class="stat-value">0</div>
+              <div class="stat-meta">所有节点授权端口合计</div>
+            </article>
+            <article class="stat">
+              <div class="stat-label">在线映射 <span class="stat-tag">全集群</span></div>
+              <div id="statMappings" class="stat-value">0</div>
+              <div id="statMappingsMeta" class="stat-meta">共 0 条映射</div>
+            </article>
+          </div>
+
+          <section class="panel cluster-overview-panel" id="clusterOverviewPanel">
+            <div class="section-head">
+              <div>
+                <h2>集群总览</h2>
+                <p id="clusterOverviewMeta">主节点与各从节点的流量 / 端口 / 用户概况</p>
+              </div>
+              <span id="clusterOverviewBadge" class="badge"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>节点</th>
+                    <th>角色</th>
+                    <th>地址</th>
+                    <th>状态</th>
+                    <th>版本</th>
+                    <th>用户 / 映射</th>
+                    <th>端口池</th>
+                    <th>实时入站</th>
+                    <th>实时出站</th>
+                    <th>累计入站</th>
+                    <th>累计出站</th>
+                  </tr>
+                </thead>
+                <tbody id="clusterOverviewRows"></tbody>
+              </table>
+              <div id="clusterOverviewEmpty" class="empty hidden">单节点模式（无从节点）</div>
+            </div>
+          </section>
+
+          <!-- 0.10.2.8：集群用户——原「在线用户」「从节点登录用户」两面板合并，以集群为单位展示 -->
+          <section class="panel online-panel">
+            <div class="section-head">
+              <div>
+                <h2>集群用户 <span class="stat-tag">全集群</span></h2>
+                <p>主节点客户端在线 ∪ 从节点 frpc 接入在线，按用户合并展示</p>
+              </div>
+              <span id="clusterUsersCount" class="badge">0 人在线</span>
+            </div>
+            <div class="table-wrap">
+              <table class="online-table">
+                <thead>
+                  <tr>
+                    <th>用户名</th>
+                    <th>用户 ID</th>
+                    <th>登录节点</th>
+                    <th>IP 地址</th>
+                    <th>最后心跳</th>
+                    <th>在线映射</th>
+                    <th>客户端版本</th>
+                    <th>到期时间</th>
+                  </tr>
+                </thead>
+                <tbody id="clusterUsersRows"></tbody>
+              </table>
+              <div id="clusterUsersEmpty" class="empty">当前没有在线用户</div>
+            </div>
+          </section>
+
+          <section class="panel traffic-panel">
+            <div class="section-head">
+              <div>
+                <h2>流量统计</h2>
+                <p id="trafficMeta">等待采样</p>
+              </div>
+            </div>
+            <div class="stats-grid traffic-stats">
+              <article class="stat stat-live">
+                <div class="stat-label">实时入站 <span class="stat-tag">网卡</span></div>
+                <div id="systemIncomingRate" class="stat-value">-</div>
+                <div class="stat-meta">整机实时带宽</div>
+              </article>
+              <article class="stat stat-live">
+                <div class="stat-label">实时出站 <span class="stat-tag">网卡</span></div>
+                <div id="systemOutgoingRate" class="stat-value">-</div>
+                <div class="stat-meta">整机实时带宽</div>
+              </article>
+              <article class="stat">
+                <div class="stat-label">累计入站</div>
+                <div id="trafficIncomingTotal" class="stat-value">-</div>
+                <div class="stat-meta">frp 结算 · 连接结束入账</div>
+              </article>
+              <article class="stat">
+                <div class="stat-label">累计出站</div>
+                <div id="trafficOutgoingTotal" class="stat-value">-</div>
+                <div class="stat-meta">frp 结算 · 连接结束入账</div>
+              </article>
+            </div>
+            <p class="traffic-note">
+              实时速率取自服务器网卡（每 2 秒采样）；frp 代理流量在每条连接结束后结算，映射速率在连接关闭时更新。
+            </p>
+            <div class="traffic-user-section">
+              <h3>用户流量排行</h3>
+              <div id="trafficUserList" class="traffic-user-list">
+                <p class="empty">暂无流量数据</p>
+              </div>
+            </div>
+            <!-- 0.10.1.2 规格8：节点流量统计——默认显示全集群总流量，点击展开各节点明细 -->
+            <div class="traffic-user-section node-traffic-section">
+              <h3>节点流量（全集群合计）</h3>
+              <div
+                id="nodeTrafficSummary"
+                class="node-traffic-summary"
+                role="button"
+                tabindex="0"
+                aria-expanded="false"
+                title="点击展开 / 收起各节点流量明细"
+              >
+                <article class="stat stat-live">
+                  <div class="stat-label">实时入站 <span class="stat-tag">合计</span></div>
+                  <div id="nodeTrafficInRate" class="stat-value">-</div>
+                  <div class="stat-meta">主节点 + 各从节点</div>
+                </article>
+                <article class="stat stat-live">
+                  <div class="stat-label">实时出站 <span class="stat-tag">合计</span></div>
+                  <div id="nodeTrafficOutRate" class="stat-value">-</div>
+                  <div class="stat-meta">主节点 + 各从节点</div>
+                </article>
+                <article class="stat">
+                  <div class="stat-label">累计入站 <span class="stat-tag">合计</span></div>
+                  <div id="nodeTrafficInTotal" class="stat-value">-</div>
+                  <div class="stat-meta">主节点 + 各从节点</div>
+                </article>
+                <article class="stat">
+                  <div class="stat-label">累计出站 <span class="stat-tag">合计</span></div>
+                  <div id="nodeTrafficOutTotal" class="stat-value">-</div>
+                  <div class="stat-meta">主节点 + 各从节点</div>
+                </article>
+                <span id="nodeTrafficToggleHint" class="node-traffic-toggle-hint">
+                  展开明细 ▾
+                </span>
+              </div>
+              <div id="nodeTrafficDetail" class="hidden">
+                <div class="table-wrap">
+                  <table class="online-table">
+                    <thead>
+                      <tr>
+                        <th>节点</th>
+                        <th>角色</th>
+                        <th>地址</th>
+                        <th>状态</th>
+                        <th>实时入站</th>
+                        <th>实时出站</th>
+                        <th>累计入站</th>
+                        <th>累计出站</th>
+                      </tr>
+                    </thead>
+                    <tbody id="nodeTrafficRows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="content-grid">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>最近操作</h2>
+                  <p>管理员与客户端活动</p>
+                </div>
+              </div>
+              <div id="auditList" class="audit-list"></div>
+            </section>
+
+            <section class="process-panel">
+              <div class="section-head">
+                <div>
+                  <h2>frps 进程</h2>
+                  <p>本机运行状态</p>
+                </div>
+                <span id="frpsBadge" class="badge">未知</span>
+              </div>
+              <div class="status-line">
+                <span>frps 版本</span>
+                <strong id="frpsVersion" class="mono">-</strong>
+              </div>
+              <div class="status-line">
+                <span>监听端口</span>
+                <strong id="frpsPort" class="mono">7000</strong>
+              </div>
+              <div class="status-line">
+                <span>进程 PID</span>
+                <strong id="frpsPid" class="mono">-</strong>
+              </div>
+              <div class="status-line">
+                <span>启动时间</span>
+                <strong id="frpsStarted">-</strong>
+              </div>
+              <div class="status-line">
+                <span>流量采集</span>
+                <strong id="trafficStatus">等待采样</strong>
+              </div>
+              <p id="frpsUpdateMessage" class="notice hidden"></p>
+              <div class="process-actions">
+                <button class="button" data-frps="start">
+                  <i data-lucide="play" class="icon"></i>
+                  启动
+                </button>
+                <button class="button secondary" data-frps="stop">
+                  <i data-lucide="square" class="icon"></i>
+                  停止
+                </button>
+              </div>
+              <div class="process-actions">
+                <button class="button secondary" id="fetchFrpsButton" type="button">
+                  <i data-lucide="cloud-download" class="icon"></i>
+                  从授权中心更新 frps
+                </button>
+                <button class="button secondary" id="uploadFrpsButton" type="button">
+                  <i data-lucide="file-up" class="icon"></i>
+                  手动导入 frps
+                </button>
+                <input id="frpsFile" type="file" hidden />
+              </div>
+              <p class="muted" style="margin-top:8px;">
+                更新会按本机系统/架构自动匹配，导入的文件按平台校验；运行中会先停止再热替换并自动重启。
+              </p>
+            </section>
+          </div>
+        </section>

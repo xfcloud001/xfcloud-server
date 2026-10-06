@@ -1,0 +1,42 @@
+    <dialog id="renewDialog">
+      <form id="renewForm">
+        <header class="modal-head">
+          <h2>用户续费</h2>
+          <button class="button ghost icon-only" type="button" data-close-renew title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <input id="renewUserId" type="hidden" />
+          <div class="status-line">
+            <span>续费用户</span>
+            <strong id="renewUsername">-</strong>
+          </div>
+          <div class="status-line">
+            <span>当前到期</span>
+            <strong id="renewCurrentExpiry">-</strong>
+          </div>
+          <div class="field">
+            <label for="renewDays">续费时长</label>
+            <select id="renewDays" required>
+              <option value="30">30 天</option>
+              <option value="90">90 天</option>
+              <option value="180">180 天</option>
+              <option value="365">365 天</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="renewNote">备注</label>
+            <input id="renewNote" maxlength="200" placeholder="可选" />
+          </div>
+          <p id="renewFormError" class="error-text" role="alert"></p>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-renew>取消</button>
+            <button class="button" type="submit">
+              <i data-lucide="calendar-plus" class="icon"></i>
+              确认续费
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>

@@ -1,0 +1,21 @@
+{
+  "name": "xfcloud-server",
+  "version": "0.10.2.9",
+  "description": "XFCloud Tunnel 服务端 —— 基于 frp 的多用户内网穿透业务管理平台：套餐开号、端口授权、流量限速、集群管理、在线更新。",
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "homepage": "https://www.xfhub.top",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xfcloud001/xfcloud-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xfcloud001/xfcloud-server/issues"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite server/app.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

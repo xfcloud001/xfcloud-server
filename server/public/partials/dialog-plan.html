@@ -1,0 +1,125 @@
+    <dialog id="planDialog">
+      <form id="planForm">
+        <header class="modal-head">
+          <h2 id="planDialogTitle">新建套餐</h2>
+          <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <input id="planId" type="hidden" />
+          <div class="form-grid">
+            <div class="field wide">
+              <label for="planName">套餐名称</label>
+              <input id="planName" required maxlength="40" autocomplete="off" placeholder="例如：月卡套餐" />
+            </div>
+            <div class="field">
+              <label for="planDuration">时长（天）</label>
+              <input id="planDuration" type="number" min="1" max="3650" step="1" required />
+            </div>
+            <div class="field">
+              <label for="planPorts">端口数</label>
+              <input id="planPorts" type="number" min="1" max="500" step="1" required />
+            </div>
+            <div class="field">
+              <label for="planTraffic">流量配额（GB）</label>
+              <input id="planTraffic" type="number" min="0" step="1" value="0" />
+              <small>0 表示不限流量</small>
+            </div>
+            <div class="field">
+              <label for="planRateLimit">带宽限速（Mbps）</label>
+              <input id="planRateLimit" type="number" min="0" step="1" value="0" />
+              <small>0 表示不限速；开号/兑换该套餐的账号自动按此限速</small>
+            </div>
+            <div class="field">
+              <label for="planPrice">价格（元）</label>
+              <input id="planPrice" type="number" min="0" step="0.1" required />
+              <small>仅用于展示，不涉及在线支付</small>
+            </div>
+            <div class="field">
+              <label for="planSort">排序</label>
+              <input id="planSort" type="number" step="1" value="0" />
+              <small>数字越小越靠前</small>
+            </div>
+          </div>
+          <p id="planFormError" class="error-text" role="alert"></p>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-dialog>取消</button>
+            <button class="button" type="submit">
+              <i data-lucide="save" class="icon"></i>
+              保存
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="batchDialog" class="batch-dialog">
+      <form id="batchForm">
+        <header class="modal-head">
+          <h2>按套餐批量开号</h2>
+          <button class="button ghost icon-only" type="button" data-close-dialog title="关闭">
+            <i data-lucide="x" class="icon"></i>
+          </button>
+        </header>
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="field wide">
+              <label for="batchNode">目标节点</label>
+              <select id="batchNode" required></select>
+              <small>开号前必须先选定节点；账号端口将从该节点的端口池中分配</small>
+            </div>
+            <div class="field wide">
+              <label for="batchPlan">套餐</label>
+              <select id="batchPlan" required></select>
+              <small id="batchPlanHint"></small>
+            </div>
+            <div class="field">
+              <label for="batchCount">开号数量</label>
+              <input id="batchCount" type="number" min="1" max="200" step="1" value="1" required />
+              <small>单次最多 200 个</small>
+            </div>
+            <div class="field">
+              <label for="batchPrefix">用户名前缀</label>
+              <input id="batchPrefix" maxlength="20" autocomplete="off" placeholder="例如 vip" required />
+              <small>1-20 位小写字母/数字；用户名 = 前缀 + 6 位随机字符（仅展示）；登录用的 6 位用户 ID 自动生成</small>
+            </div>
+          </div>
+          <p id="batchFormError" class="error-text" role="alert"></p>
+          <div class="modal-actions">
+            <button class="button secondary" type="button" data-close-dialog>关闭</button>
+            <button class="button" type="submit">
+              <i data-lucide="key-round" class="icon"></i>
+              生成账号
+            </button>
+          </div>
+
+          <div id="batchResult" class="batch-result hidden">
+            <div class="section-head">
+              <div>
+                <h2>生成结果</h2>
+                <p>密码仅展示这一次，离开本页后无法找回，请立即复制保存</p>
+              </div>
+              <button class="button secondary" type="button" id="batchCopyButton">
+                <i data-lucide="copy" class="icon"></i>
+                复制全部
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>用户 ID</th>
+                    <th>用户名</th>
+                    <th>初始密码</th>
+                    <th>端口</th>
+                    <th>套餐天数</th>
+                  </tr>
+                </thead>
+                <tbody id="batchResultRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </form>
+    </dialog>
